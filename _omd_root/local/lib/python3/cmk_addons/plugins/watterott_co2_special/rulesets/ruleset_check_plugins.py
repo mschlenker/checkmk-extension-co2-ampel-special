@@ -27,6 +27,30 @@ def parameter_form_watterott_co2_humidity():
             ),
         }
     )
+    
+def parameter_form_watterott_co2_pressure():
+    return Dictionary(
+        elements = {
+            "lower": DictElement(
+                parameter_form = SimpleLevels(
+                    title = Title("Lower air pressure threshold"),
+                    form_spec_template = Float(),
+                    level_direction = LevelDirection.LOWER,
+                    prefill_fixed_levels = DefaultValue(value=(900.0, 850.0)),
+                ),
+                required = True,
+            ),
+            "upper": DictElement(
+                parameter_form = SimpleLevels(
+                    title = Title("Upper air pressure threshold"),
+                    form_spec_template = Float(),
+                    level_direction = LevelDirection.UPPER,
+                    prefill_fixed_levels = DefaultValue(value=(1100.0, 1150.0)),
+                ),
+                required = True,
+            ),
+        }
+    )
 
 def parameter_form_watterott_co2_temperature():
     return Dictionary(
@@ -81,6 +105,14 @@ rule_spec_watterott_co2_special_humidity = CheckParameters(
     title = Title("Humidity levels for Watterott CO₂ sensor"),
     topic = Topic.ENVIRONMENTAL,
     parameter_form = parameter_form_watterott_co2_humidity,
+    condition = HostCondition(),
+)
+
+rule_spec_watterott_co2_special_pressure = CheckParameters(
+    name = "watterott_co2_special_pressure",
+    title = Title("Air pressure levels for Watterott CO₂ sensor"),
+    topic = Topic.ENVIRONMENTAL,
+    parameter_form = parameter_form_watterott_co2_pressure,
     condition = HostCondition(),
 )
 

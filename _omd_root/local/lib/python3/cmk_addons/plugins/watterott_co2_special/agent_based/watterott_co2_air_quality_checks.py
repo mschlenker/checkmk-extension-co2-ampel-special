@@ -46,6 +46,21 @@ def check_watterott_co2_humidity(params, section):
         label="Humidity sensor value",
         render_func=lambda v: "%.1f%%" % v,
     )
+    
+def discover_watterott_co2_pressure(section):
+    if "p" in section:
+        yield Service()
+
+def check_watterott_co2_pressure(params, section):
+    if "p" in section:
+        yield from check_levels(
+            section["p"] / 10.0,
+            levels_upper=params["upper"],
+            levels_lower=params["lower"],
+            metric_name="pressure_pa",
+            label="Air pressure",
+            render_func=lambda v: "%.2fpa" % v,
+        )
 
 agent_section_watterott_co2_special = AgentSection(
     name = "watterott_co2_special",
@@ -89,4 +104,17 @@ check_plugin_watterott_co2_humidity = CheckPlugin(
         "lower": ("no_levels", None),
     },
     check_ruleset_name = "watterott_co2_special_humidity",
+)
+
+check_plugin_watterott_co2_pressure = CheckPlugin(
+    name = "watterott_co2_special_pressure",
+    sections = [ "watterott_co2_special" ],
+    service_name = "Air pressure Watterott sensor",
+    discovery_function = discover_watterott_co2_pressure,
+    check_function = check_watterott_co2_pressure,
+    check_default_parameters = {
+        "upper": ("no_levels", None),
+        "lower": ("no_levels", None),
+    },
+    check_ruleset_name = "watterott_co2_special_pressure",
 )

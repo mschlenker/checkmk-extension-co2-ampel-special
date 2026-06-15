@@ -56,12 +56,12 @@ def discover_watterott_co2_pressure(section):
 def check_watterott_co2_pressure(params, section):
     if "p" in section:
         yield from check_levels(
-            section["p"] / 10.0,
+            section["p"] * 100.0,
             levels_upper=params["upper"],
             levels_lower=params["lower"],
             metric_name="pressure_pa",
             label="Air pressure",
-            render_func=lambda v: "%.2fpa" % v,
+            render_func=lambda v: "%dpa" % v,
         )
 
 agent_section_watterott_co2_special = AgentSection(

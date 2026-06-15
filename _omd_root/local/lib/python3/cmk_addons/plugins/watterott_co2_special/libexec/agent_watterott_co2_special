@@ -53,11 +53,11 @@ def dump_from_file():
     fpath = os.path.realpath(config["file"])
     fmtime = os.path.getmtime(fpath)
     now = time.time()
-    if (now - fmtime < args.maxage):
+    if (now - fmtime < config["maxage"]):
         if "piggyback" in config:
             sect_start = "<<<<" + config["piggyback"] + ">>>>"
             print(sect_start)
-        f = open(args.file, 'r')
+        f = open(fpath, 'r')
         print('<<<watterott_co2_special>>>')
         for line in f:
             print(line, end='')

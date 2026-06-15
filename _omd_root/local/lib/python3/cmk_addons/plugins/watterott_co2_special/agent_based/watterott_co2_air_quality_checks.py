@@ -13,8 +13,10 @@ def discover_watterott_co2_co2(section):
     yield Service()
     
 def check_watterott_co2_co2(params, section):
+    # CO2 correction 2026
+    correction = 32
     yield from check_levels(
-        section["c"],
+        section["c"] + correction,
         levels_upper=params["upper"],
         metric_name="parts_per_million",
         label="CO₂ sensor value",
